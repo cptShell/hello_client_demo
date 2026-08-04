@@ -33,6 +33,34 @@ type SidebarGroupProps = Omit<
 }
 
 const FLYOUT_POINTER_GRACE_MS = 100
+const FOCUSABLE_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',')
+
+function getFocusableElements(container: ParentNode) {
+  return Array.from(
+    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+  ).filter(
+    (element) =>
+      element.tabIndex >= 0 &&
+      element.getAttribute('aria-disabled') !== 'true' &&
+      !element.closest('[hidden], [inert]'),
+  )
+}
+
+function getNextLogicalFocusTarget(
+  trigger: HTMLButtonElement,
+  content: HTMLDivElement,
+) {
+  const documentTargets = getFocusableElements(document).filter(
+    (element) => !content.contains(element),
+  )
+  const triggerIndex = documentTargets.indexOf(trigger)
+
+  return triggerIndex === -1 ? undefined : documentTargets[triggerIndex + 1]
+}
 
 export const SidebarGroup = forwardRef<HTMLLIElement, SidebarGroupProps>(
   function SidebarGroup(
@@ -210,9 +238,13 @@ export const SidebarGroup = forwardRef<HTMLLIElement, SidebarGroupProps>(
       }
 
       const previousTarget = event.relatedTarget
+      const cameFromContent =
+        previousTarget instanceof Node &&
+        contentRef.current?.contains(previousTarget)
       const enteredGroup =
-        !(previousTarget instanceof Node) ||
-        !event.currentTarget.contains(previousTarget)
+        !cameFromContent &&
+        (!(previousTarget instanceof Node) ||
+          !event.currentTarget.contains(previousTarget))
 
       if (!enteredGroup) {
         return
@@ -234,8 +266,14 @@ export const SidebarGroup = forwardRef<HTMLLIElement, SidebarGroupProps>(
       }
 
       const nextTarget = event.relatedTarget
+      const focusRemainsInContent =
+        nextTarget instanceof Node &&
+        contentRef.current?.contains(nextTarget)
 
-      if (nextTarget instanceof Node && event.currentTarget.contains(nextTarget)) {
+      if (
+        focusRemainsInContent ||
+        (nextTarget instanceof Node && event.currentTarget.contains(nextTarget))
+      ) {
         return
       }
 
@@ -247,6 +285,39 @@ export const SidebarGroup = forwardRef<HTMLLIElement, SidebarGroupProps>(
     }
 
     const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>) => {
+      if (event.key === 'Tab' && collapsed && state.open) {
+        const content = contentRef.current
+        const trigger = triggerRef.current
+
+        if (content && trigger) {
+          const contentTargets = getFocusableElements(content)
+          const firstTarget = contentTargets[0]
+          const lastTarget = contentTargets.at(-1)
+
+          if (!event.shiftKey && event.target === trigger && firstTarget) {
+            event.preventDefault()
+            firstTarget.focus()
+            return
+          }
+
+          if (event.shiftKey && event.target === firstTarget) {
+            event.preventDefault()
+            trigger.focus()
+            return
+          }
+
+          if (!event.shiftKey && event.target === lastTarget) {
+            const nextTarget = getNextLogicalFocusTarget(trigger, content)
+
+            if (nextTarget) {
+              event.preventDefault()
+              nextTarget.focus()
+              return
+            }
+          }
+        }
+      }
+
       if (event.key !== 'Escape') {
         return
       }

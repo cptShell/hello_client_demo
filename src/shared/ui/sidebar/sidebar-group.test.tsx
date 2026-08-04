@@ -38,7 +38,10 @@ describe('Sidebar.Group', () => {
     rerender(<GroupFixture showChild={false} />)
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByLabelText('Clients')).not.toBeVisible()
+    expect(screen.getByLabelText('Clients')).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    )
   })
 
   it('keeps an active collapsed group closed until explicitly opened', async () => {
@@ -72,7 +75,7 @@ describe('Sidebar.Group', () => {
 
     await user.click(trigger)
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
   })
 
   it('closes a pointer-opened flyout after the grace period', () => {
@@ -90,23 +93,22 @@ describe('Sidebar.Group', () => {
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
     const group = trigger.closest('li')
-    const content = screen.getByLabelText('Clients')
 
     expect(group).not.toBeNull()
     fireEvent.pointerEnter(group!)
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     fireEvent.pointerLeave(group!)
     act(() => vi.advanceTimersByTime(99))
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     fireEvent.pointerEnter(group!)
     act(() => vi.advanceTimersByTime(1))
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     fireEvent.pointerLeave(group!)
     act(() => vi.advanceTimersByTime(100))
-    expect(content).not.toBeVisible()
+    expect(screen.getByLabelText('Clients')).not.toBeVisible()
   })
 
   it('keeps a click-opened flyout until an explicit dismissal', () => {
@@ -124,7 +126,6 @@ describe('Sidebar.Group', () => {
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
     const group = trigger.closest('li')
-    const content = screen.getByLabelText('Clients')
 
     expect(group).not.toBeNull()
     fireEvent.pointerEnter(group!)
@@ -132,10 +133,10 @@ describe('Sidebar.Group', () => {
     fireEvent.pointerLeave(group!)
     act(() => vi.advanceTimersByTime(100))
 
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     fireEvent.click(trigger)
-    expect(content).not.toBeVisible()
+    expect(screen.getByLabelText('Clients')).not.toBeVisible()
   })
 
   it('opens from keyboard focus and closes when focus leaves the group', async () => {
@@ -159,19 +160,18 @@ describe('Sidebar.Group', () => {
     )
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
-    const content = screen.getByLabelText('Clients')
 
     await user.tab()
     expect(trigger).toHaveFocus()
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     await user.tab()
     expect(screen.getByRole('button', { name: 'Client list' })).toHaveFocus()
-    expect(content).toBeVisible()
+    expect(screen.getByLabelText('Clients')).toBeVisible()
 
     await user.tab()
     expect(screen.getByRole('button', { name: 'Outside' })).toHaveFocus()
-    expect(content).not.toBeVisible()
+    expect(screen.getByLabelText('Clients')).not.toBeVisible()
   })
 
   it('closes a collapsed flyout from outside interaction without restoring focus', () => {
@@ -319,11 +319,11 @@ describe('Sidebar.Group', () => {
 
     expect(group).not.toBeNull()
     fireEvent.pointerEnter(group!)
-    expect(content).not.toBeVisible()
+    expect(content).toHaveAttribute('aria-hidden', 'true')
 
     await user.tab()
     expect(trigger).toHaveFocus()
-    expect(content).not.toBeVisible()
+    expect(content).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('selects the group entry item when its expanded trigger is activated', async () => {
@@ -384,7 +384,7 @@ describe('Sidebar.Group', () => {
 
     expect(trigger).toHaveFocus()
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
-    expect(content).not.toBeVisible()
+    expect(content).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('keeps an active inline group open', () => {

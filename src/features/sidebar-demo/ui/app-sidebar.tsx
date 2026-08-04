@@ -33,10 +33,14 @@ const mobileRootClassName =
 const listClassName = 'm-0 list-none p-0'
 const iconClassName = 'size-[var(--sidebar-icon-size)] shrink-0'
 const navigationLabelClassName =
-  'min-w-0 flex-1 truncate text-left group-data-[variant=desktop-collapsed]/sidebar:sr-only group-data-[variant=mobile]/sidebar:flex-none group-data-[variant=mobile]/sidebar:text-center group-data-[variant=mobile]/sidebar:text-xs/4'
+  'min-w-0 flex-1 truncate text-left opacity-100 transition-opacity duration-[var(--sidebar-motion-normal)] ease-standard group-data-[variant=desktop-collapsed]/sidebar:opacity-0 group-data-[variant=mobile]/sidebar:flex-none group-data-[variant=mobile]/sidebar:text-center group-data-[variant=mobile]/sidebar:text-xs/4'
 const submenuLabelClassName = 'min-w-0 flex-1 truncate text-left'
 const itemBaseClassName =
-  'group flex min-h-[var(--sidebar-item-height)] w-full items-center gap-3 rounded-item px-3 text-sm/5 font-medium no-underline outline-none transition-colors duration-[var(--sidebar-motion-fast)] ease-standard focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-navigation'
+  'group flex min-h-[var(--sidebar-item-height)] w-full items-center gap-3 overflow-hidden rounded-item px-3 text-sm/5 font-medium no-underline outline-none transition-colors duration-[var(--sidebar-motion-fast)] ease-standard focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-navigation'
+const collapseTriggerClassName =
+  'mt-3 flex min-h-[var(--sidebar-item-height)] w-full items-center justify-start px-3 text-text-secondary outline-none transition-colors duration-[var(--sidebar-motion-fast)] ease-standard hover:text-text-primary focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-navigation'
+const separatorClassName =
+  'my-2 border-t border-border-default group-data-[variant=mobile]/sidebar:hidden'
 
 function joinClassNames(...classNames: Array<string | undefined>) {
   const result = classNames.filter(Boolean).join(' ')
@@ -65,10 +69,6 @@ function getRootClassName(state: SidebarRootState) {
 }
 
 function getItemLayout(variant: SidebarItemState['variant']) {
-  if (variant === 'desktop-collapsed') {
-    return 'justify-center gap-0 px-0'
-  }
-
   if (variant === 'mobile') {
     return 'h-[var(--sidebar-mobile-height)] min-w-[var(--sidebar-mobile-item-width)] flex-col justify-center gap-1 px-2 py-1 text-xs/4'
   }
@@ -106,9 +106,18 @@ function getGroupTriggerClassName({
   )
 }
 
-function getGroupContentClassName({ presentation }: SidebarGroupState) {
+function getGroupContentClassName({ open, presentation }: SidebarGroupState) {
+  if (presentation === 'inline') {
+    return joinClassNames(
+      'grid overflow-hidden transition-[grid-template-rows,opacity] duration-[var(--sidebar-motion-normal)] ease-standard motion-reduce:transition-none [&>*]:min-h-0 [&>*]:overflow-hidden',
+      open
+        ? 'grid-rows-[1fr] opacity-100'
+        : 'grid-rows-[0fr] opacity-0',
+    )
+  }
+
   if (presentation === 'flyout') {
-    return 'absolute left-full top-0 z-[var(--sidebar-z-flyout)] ml-3 w-[var(--sidebar-flyout-width)] rounded-flyout border border-border-default bg-surface-overlay p-2 shadow-flyout'
+    return 'z-[var(--sidebar-z-flyout)] ml-3 w-[var(--sidebar-flyout-width)] rounded-flyout border border-border-default bg-surface-overlay p-2 shadow-flyout'
   }
 
   if (presentation === 'bottom-sheet') {
@@ -125,14 +134,6 @@ function getSubmenuItemClassName({ active, variant }: SidebarItemState) {
     active
       ? 'bg-surface-active-strong text-text-active'
       : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
-  )
-}
-
-function getCollapseTriggerClassName({ variant }: SidebarRootState) {
-  return joinClassNames(
-    itemBaseClassName,
-    'mt-3 border-t border-border-default pt-3 text-text-secondary hover:bg-surface-hover hover:text-text-primary',
-    variant === 'desktop-collapsed' ? 'justify-center gap-0 px-0' : undefined,
   )
 }
 
@@ -154,14 +155,14 @@ export function AppSidebar({
       }
       defaultValue={defaultValue}
     >
-      <div className="flex min-h-14 items-center gap-3 border-b border-border-default px-3 pb-3 group-data-[variant=desktop-collapsed]/sidebar:justify-center group-data-[variant=desktop-collapsed]/sidebar:px-0 group-data-[variant=mobile]/sidebar:hidden">
+      <div className="flex min-h-14 items-center gap-3 overflow-hidden border-b border-border-default px-3 pb-3 group-data-[variant=mobile]/sidebar:hidden">
         <span
           aria-hidden="true"
-          className="grid size-9 shrink-0 place-items-center rounded-item bg-surface-active-strong text-sm font-semibold text-text-active"
+          className="grid size-9 shrink-0 place-items-center rounded-item bg-surface-active-strong text-sm font-semibold text-text-active transition-transform duration-[var(--sidebar-motion-normal)] ease-standard group-data-[variant=desktop-collapsed]/sidebar:-translate-x-2"
         >
           HC
         </span>
-        <span className="min-w-0 group-data-[variant=desktop-collapsed]/sidebar:sr-only">
+        <span className="min-w-0 opacity-100 transition-opacity duration-[var(--sidebar-motion-normal)] ease-standard group-data-[variant=desktop-collapsed]/sidebar:opacity-0">
           <span className="block truncate text-base/6 font-semibold">
             HelloClient
           </span>
@@ -174,7 +175,7 @@ export function AppSidebar({
       <Sidebar.List
         className={joinClassNames(
           listClassName,
-          'mt-3 flex flex-1 flex-col gap-1 group-data-[variant=mobile]/sidebar:mt-0 group-data-[variant=mobile]/sidebar:flex-row group-data-[variant=mobile]/sidebar:overflow-x-auto group-data-[variant=mobile]/sidebar:overflow-y-hidden group-data-[variant=mobile]/sidebar:[&>li]:min-w-[var(--sidebar-mobile-item-width)] group-data-[variant=mobile]/sidebar:[&>li]:flex-1 group-data-[variant=mobile]/sidebar:[&>li]:shrink-0',
+          'mt-3 min-h-0 flex flex-1 flex-col gap-1 overflow-y-auto overscroll-contain group-data-[variant=mobile]/sidebar:mt-0 group-data-[variant=mobile]/sidebar:flex-row group-data-[variant=mobile]/sidebar:overflow-x-auto group-data-[variant=mobile]/sidebar:overflow-y-hidden group-data-[variant=mobile]/sidebar:[&>li]:min-w-[var(--sidebar-mobile-item-width)] group-data-[variant=mobile]/sidebar:[&>li]:flex-1 group-data-[variant=mobile]/sidebar:[&>li]:shrink-0',
         )}
       >
         <Sidebar.Item asChild className={getItemClassName} value="/overview">
@@ -204,6 +205,8 @@ export function AppSidebar({
             <span className={navigationLabelClassName}>Analytics</span>
           </a>
         </Sidebar.Item>
+
+        <Sidebar.Separator className={separatorClassName} />
 
         <Sidebar.Item asChild className={getItemClassName} value="/campaigns">
           <a href="#/campaigns">
@@ -241,7 +244,9 @@ export function AppSidebar({
             >
               Products
             </span>
-            <Sidebar.List className={joinClassNames(listClassName, 'mt-1')}>
+            <Sidebar.List
+              className={joinClassNames(listClassName, 'mt-1')}
+            >
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
@@ -283,7 +288,7 @@ export function AppSidebar({
         </Sidebar.Item>
       </Sidebar.List>
 
-      <Sidebar.CollapseTrigger className={getCollapseTriggerClassName}>
+      <Sidebar.CollapseTrigger className={collapseTriggerClassName}>
         <PanelLeftClose
           aria-hidden="true"
           className={joinClassNames(
@@ -298,7 +303,7 @@ export function AppSidebar({
             'hidden group-data-[variant=desktop-collapsed]/sidebar:block',
           )}
         />
-        <span className={navigationLabelClassName}>Collapse navigation</span>
+        <span className="sr-only">Collapse navigation</span>
       </Sidebar.CollapseTrigger>
     </Sidebar.Root>
   )

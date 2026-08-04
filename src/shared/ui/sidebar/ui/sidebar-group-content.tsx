@@ -8,6 +8,7 @@ import {
   type SidebarGroupState,
   type StateClassName,
 } from '../model/sidebar-types'
+import { SidebarFlyout } from './sidebar-flyout'
 import { SidebarMobileSheet } from './sidebar-mobile-sheet'
 
 type SidebarGroupContentProps = Omit<
@@ -40,6 +41,37 @@ export const SidebarGroupContent = forwardRef<
 ) {
   const group = useSidebarGroupContext()
   const resolvedClassName = resolveStateClassName(className, group.state)
+
+  if (group.state.presentation === 'flyout') {
+    if (!group.state.open) {
+      return (
+        <div
+          {...contentProps}
+          aria-labelledby={group.triggerId}
+          className={resolvedClassName}
+          hidden
+          id={group.contentId}
+          ref={composeRefs(group.contentRef, forwardedRef)}
+        >
+          {children}
+        </div>
+      )
+    }
+
+    return (
+      <SidebarFlyout
+        {...contentProps}
+        aria-labelledby={group.triggerId}
+        className={resolvedClassName}
+        contentRef={group.contentRef}
+        flyoutRef={composeRefs(group.contentRef, forwardedRef)}
+        id={group.contentId}
+        triggerRef={group.triggerRef}
+      >
+        {children}
+      </SidebarFlyout>
+    )
+  }
 
   if (group.state.presentation === 'bottom-sheet') {
     if (!group.state.open) {
@@ -80,13 +112,14 @@ export const SidebarGroupContent = forwardRef<
   return (
     <div
       {...contentProps}
+      aria-hidden={group.state.open ? undefined : true}
       aria-labelledby={group.triggerId}
       className={resolvedClassName}
-      hidden={!group.state.open}
       id={group.contentId}
+      inert={!group.state.open}
       ref={composeRefs(group.contentRef, forwardedRef)}
     >
-      {children}
+      <div>{children}</div>
     </div>
   )
 })
