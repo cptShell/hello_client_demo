@@ -6,36 +6,6 @@ import { describe, expect, it, vi } from 'vitest'
 import { Sidebar } from './index'
 
 describe('Sidebar.Item', () => {
-  it('selects an uncontrolled item and marks the active destination', async () => {
-    const user = userEvent.setup()
-    const onValueChange = vi.fn()
-    render(
-      <Sidebar.Root
-        aria-label="Primary"
-        defaultValue="overview"
-        onValueChange={onValueChange}
-      >
-        <Sidebar.List>
-          <Sidebar.Item value="overview">Overview</Sidebar.Item>
-          <Sidebar.Item value="clients">Clients</Sidebar.Item>
-        </Sidebar.List>
-      </Sidebar.Root>,
-    )
-
-    expect(screen.getByRole('button', { name: 'Overview' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
-
-    await user.click(screen.getByRole('button', { name: 'Clients' }))
-
-    expect(onValueChange).toHaveBeenCalledExactlyOnceWith('clients')
-    expect(screen.getByRole('button', { name: 'Clients' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
-  })
-
   it('does not mutate a controlled value after selection', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

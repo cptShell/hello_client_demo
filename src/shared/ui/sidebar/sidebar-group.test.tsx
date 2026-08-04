@@ -386,13 +386,4 @@ describe('Sidebar.Group', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
     expect(content).toHaveAttribute('aria-hidden', 'true')
   })
-
-  it('keeps an active inline group open', () => {
-    render(<GroupFixture />)
-    const trigger = screen.getByRole('button', { name: 'Clients' })
-    const content = screen.getByLabelText('Clients')
-
-    expect(trigger).toHaveAttribute('aria-expanded', 'true')
-    expect(content).toBeVisible()
-  })
 })

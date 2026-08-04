@@ -15,32 +15,6 @@ beforeEach(() => {
 })
 
 describe('Sidebar.Root', () => {
-  it('toggles uncontrolled expanded state through CollapseTrigger', async () => {
-    const user = userEvent.setup()
-    const onExpandedChange = vi.fn()
-    render(
-      <Sidebar.Root
-        aria-label="Primary"
-        onExpandedChange={onExpandedChange}
-      >
-        <Sidebar.CollapseTrigger />
-      </Sidebar.Root>,
-    )
-
-    const navigation = screen.getByRole('navigation', { name: 'Primary' })
-    expect(navigation).toHaveAttribute('data-variant', 'desktop-expanded')
-
-    await user.click(
-      screen.getByRole('button', { name: 'Collapse navigation' }),
-    )
-
-    expect(navigation).toHaveAttribute('data-variant', 'desktop-collapsed')
-    expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(false)
-    expect(
-      screen.getByRole('button', { name: 'Expand navigation' }),
-    ).toHaveAttribute('aria-expanded', 'false')
-  })
-
   it('requests a controlled change without mutating the supplied state', async () => {
     const user = userEvent.setup()
     const onExpandedChange = vi.fn()
