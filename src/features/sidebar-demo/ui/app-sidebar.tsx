@@ -265,7 +265,7 @@ export function AppSidebar({
             />
           </Sidebar.GroupTrigger>
           <Sidebar.GroupContent
-            backdropClassName="fixed inset-0 z-[var(--sidebar-z-scrim)] flex items-end bg-scrim pb-[calc(var(--sidebar-mobile-height)+var(--sidebar-safe-area-bottom))]"
+            backdropClassName="fixed inset-0 z-[var(--sidebar-z-scrim)] flex items-end bg-scrim"
             className={getGroupContentClassName}
             closeButtonClassName="absolute right-4 top-4 grid size-[var(--sidebar-item-height)] place-items-center rounded-item text-text-secondary outline-none hover:bg-surface-hover hover:text-text-primary focus-visible:ring-2 focus-visible:ring-focus-ring"
             closeContent={
