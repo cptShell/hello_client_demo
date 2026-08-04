@@ -32,6 +32,15 @@ export const SidebarGroupTrigger = forwardRef<
   const group = useSidebarGroupContext()
 
   const handleToggle = () => {
+    if (
+      root.state.variant === 'desktop-expanded' &&
+      group.entryValue !== undefined
+    ) {
+      root.setOpenGroupId(null)
+      root.setValue(group.entryValue)
+      return
+    }
+
     root.setOpenGroupId(group.explicitlyOpen ? null : group.id)
   }
 

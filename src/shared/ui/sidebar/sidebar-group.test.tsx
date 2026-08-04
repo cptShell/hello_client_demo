@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
@@ -139,5 +139,101 @@ describe('Sidebar.Group', () => {
       'Sidebar.Group id "clients" must be unique',
     )
     warning.mockRestore()
+  })
+
+  it('does not open an inactive inline group from pointer or focus', async () => {
+    const user = userEvent.setup()
+    render(
+      <Sidebar.Root aria-label="Primary">
+        <Sidebar.List>
+          <Sidebar.Group id="clients">
+            <Sidebar.GroupTrigger>Clients</Sidebar.GroupTrigger>
+            <Sidebar.GroupContent>Client links</Sidebar.GroupContent>
+          </Sidebar.Group>
+        </Sidebar.List>
+      </Sidebar.Root>,
+    )
+
+    const trigger = screen.getByRole('button', { name: 'Clients' })
+    const group = trigger.closest('li')
+    const content = screen.getByLabelText('Clients')
+
+    expect(group).not.toBeNull()
+    fireEvent.pointerEnter(group!)
+    expect(content).not.toBeVisible()
+
+    await user.tab()
+    expect(trigger).toHaveFocus()
+    expect(content).not.toBeVisible()
+  })
+
+  it('selects the group entry item when its expanded trigger is activated', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <Sidebar.Root aria-label="Primary" onValueChange={onValueChange}>
+        <Sidebar.List>
+          <Sidebar.Group entryValue="clients-list" id="clients">
+            <Sidebar.GroupTrigger>Clients</Sidebar.GroupTrigger>
+            <Sidebar.GroupContent>
+              <Sidebar.List>
+                <Sidebar.Item value="clients-list">Client list</Sidebar.Item>
+              </Sidebar.List>
+            </Sidebar.GroupContent>
+          </Sidebar.Group>
+        </Sidebar.List>
+      </Sidebar.Root>,
+    )
+
+    const trigger = screen.getByRole('button', { name: 'Clients' })
+    await user.click(trigger)
+
+    expect(onValueChange).toHaveBeenCalledExactlyOnceWith('clients-list')
+    expect(trigger).toHaveFocus()
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'Client list' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+  })
+
+  it('closes an explicitly open inactive group with Escape', async () => {
+    const user = userEvent.setup()
+    render(
+      <Sidebar.Root aria-label="Primary">
+        <Sidebar.List>
+          <Sidebar.Group id="clients">
+            <Sidebar.GroupTrigger>Clients</Sidebar.GroupTrigger>
+            <Sidebar.GroupContent>
+              <Sidebar.List>
+                <Sidebar.Item value="clients-list">Client list</Sidebar.Item>
+              </Sidebar.List>
+            </Sidebar.GroupContent>
+          </Sidebar.Group>
+        </Sidebar.List>
+      </Sidebar.Root>,
+    )
+
+    const trigger = screen.getByRole('button', { name: 'Clients' })
+    const content = screen.getByLabelText('Clients')
+
+    await user.click(trigger)
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Client list' })).toHaveFocus()
+
+    await user.keyboard('{Escape}')
+
+    expect(trigger).toHaveFocus()
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    expect(content).not.toBeVisible()
+  })
+
+  it('keeps an active inline group open', () => {
+    render(<GroupFixture />)
+    const trigger = screen.getByRole('button', { name: 'Clients' })
+    const content = screen.getByLabelText('Clients')
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    expect(content).toBeVisible()
   })
 })

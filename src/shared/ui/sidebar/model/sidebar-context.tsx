@@ -17,6 +17,7 @@ type SidebarRootContextValue = {
 
 type SidebarGroupContextValue = {
   contentId: string
+  entryValue?: string
   explicitlyOpen: boolean
   id: string
   state: SidebarGroupState
