@@ -1,0 +1,114 @@
+:root {
+  /* Primitive colors */
+  --ds-neutral-0: #ffffff;
+  --ds-neutral-50: #f8fafc;
+  --ds-neutral-100: #f1f5f9;
+  --ds-neutral-200: #e2e8f0;
+  --ds-neutral-400: #94a3b8;
+  --ds-neutral-500: #64748b;
+  --ds-neutral-700: #334155;
+  --ds-neutral-900: #0f172a;
+  --ds-accent-50: #eff6ff;
+  --ds-accent-100: #dbeafe;
+  --ds-accent-500: #3b82f6;
+  --ds-accent-600: #2563eb;
+  --ds-accent-700: #1d4ed8;
+  --ds-black-a08: rgb(15 23 42 / 0.08);
+  --ds-black-a16: rgb(15 23 42 / 0.16);
+  --ds-black-a40: rgb(15 23 42 / 0.4);
+
+  /* Semantic colors */
+  --ds-surface-page: var(--ds-neutral-50);
+  --ds-surface-navigation: var(--ds-neutral-0);
+  --ds-surface-hover: var(--ds-neutral-100);
+  --ds-surface-active: var(--ds-accent-50);
+  --ds-surface-active-strong: var(--ds-accent-100);
+  --ds-surface-overlay: var(--ds-neutral-0);
+  --ds-surface-disabled: var(--ds-neutral-100);
+  --ds-text-primary: var(--ds-neutral-900);
+  --ds-text-secondary: var(--ds-neutral-500);
+  --ds-text-disabled: var(--ds-neutral-400);
+  --ds-text-active: var(--ds-accent-600);
+  --ds-icon-default: var(--ds-neutral-700);
+  --ds-icon-active: var(--ds-accent-600);
+  --ds-border-default: var(--ds-neutral-200);
+  --ds-border-focus: var(--ds-accent-500);
+  --ds-focus-ring: var(--ds-accent-500);
+  --ds-scrim: var(--ds-black-a40);
+
+  /* Sidebar dimensions */
+  --sidebar-width-expanded: 16rem;
+  --sidebar-width-collapsed: 4.5rem;
+  --sidebar-mobile-height: 4.5rem;
+  --sidebar-item-height: 2.75rem;
+  --sidebar-mobile-item-width: 4.5rem;
+  --sidebar-icon-size: 1.25rem;
+  --sidebar-flyout-width: 14rem;
+  --sidebar-sheet-max-height: 70dvh;
+  --sidebar-sheet-handle-width: 2.5rem;
+
+  /* Sidebar shape and elevation */
+  --sidebar-radius-item: 0.75rem;
+  --sidebar-radius-flyout: 0.875rem;
+  --sidebar-radius-sheet: 1rem;
+  --sidebar-shadow-flyout: 0 12px 30px var(--ds-black-a16);
+  --sidebar-shadow-bottom-bar: 0 -6px 20px var(--ds-black-a08);
+  --sidebar-shadow-sheet: 0 -16px 40px var(--ds-black-a16);
+
+  /* Sidebar motion */
+  --sidebar-motion-fast: 120ms;
+  --sidebar-motion-normal: 180ms;
+  --sidebar-motion-sheet: 240ms;
+  --sidebar-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --sidebar-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Sidebar layering and viewport contracts */
+  --sidebar-z-navigation: 20;
+  --sidebar-z-flyout: 30;
+  --sidebar-z-scrim: 40;
+  --sidebar-z-sheet: 50;
+  --sidebar-breakpoint-mobile-max: 47.9375rem;
+  --sidebar-breakpoint-desktop-min: 48rem;
+  --sidebar-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@theme {
+  --color-*: initial;
+  --breakpoint-md: 48rem;
+}
+
+@theme inline {
+  --color-surface-page: var(--ds-surface-page);
+  --color-surface-navigation: var(--ds-surface-navigation);
+  --color-surface-hover: var(--ds-surface-hover);
+  --color-surface-active: var(--ds-surface-active);
+  --color-surface-active-strong: var(--ds-surface-active-strong);
+  --color-surface-overlay: var(--ds-surface-overlay);
+  --color-surface-disabled: var(--ds-surface-disabled);
+  --color-text-primary: var(--ds-text-primary);
+  --color-text-secondary: var(--ds-text-secondary);
+  --color-text-disabled: var(--ds-text-disabled);
+  --color-text-active: var(--ds-text-active);
+  --color-icon-default: var(--ds-icon-default);
+  --color-icon-active: var(--ds-icon-active);
+  --color-border-default: var(--ds-border-default);
+  --color-border-focus: var(--ds-border-focus);
+  --color-focus-ring: var(--ds-focus-ring);
+  --color-scrim: var(--ds-scrim);
+  --radius-item: var(--sidebar-radius-item);
+  --radius-flyout: var(--sidebar-radius-flyout);
+  --radius-sheet: var(--sidebar-radius-sheet);
+  --shadow-flyout: var(--sidebar-shadow-flyout);
+  --shadow-bottom-bar: var(--sidebar-shadow-bottom-bar);
+  --shadow-sheet: var(--sidebar-shadow-sheet);
+  --ease-standard: var(--sidebar-ease-standard);
+  --ease-exit: var(--sidebar-ease-exit);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sidebar-motion-fast: 0ms;
+    --sidebar-motion-normal: 0ms;
+    --sidebar-motion-sheet: 0ms;
+  }
+}
