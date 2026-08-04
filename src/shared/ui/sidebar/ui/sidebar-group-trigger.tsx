@@ -4,10 +4,7 @@ import type { ComponentPropsWithoutRef } from 'react'
 import { composeEventHandlers } from '@/shared/lib/compose-event-handlers'
 
 import { composeRefs } from '../lib/compose-refs'
-import {
-  useSidebarGroupContext,
-  useSidebarRootContext,
-} from '../model/sidebar-context'
+import { useSidebarGroupContext } from '../model/sidebar-context'
 import {
   resolveStateClassName,
   type SidebarGroupState,
@@ -28,21 +25,7 @@ export const SidebarGroupTrigger = forwardRef<
   { children, className, onClick, ...triggerProps },
   forwardedRef,
 ) {
-  const root = useSidebarRootContext()
   const group = useSidebarGroupContext()
-
-  const handleToggle = () => {
-    if (
-      root.state.variant === 'desktop-expanded' &&
-      group.entryValue !== undefined
-    ) {
-      root.setOpenGroupId(null)
-      root.setValue(group.entryValue)
-      return
-    }
-
-    root.setOpenGroupId(group.explicitlyOpen ? null : group.id)
-  }
 
   return (
     <button
@@ -51,7 +34,7 @@ export const SidebarGroupTrigger = forwardRef<
       aria-expanded={group.state.open}
       className={resolveStateClassName(className, group.state)}
       id={group.triggerId}
-      onClick={composeEventHandlers(onClick, handleToggle)}
+      onClick={composeEventHandlers(onClick, group.activateTrigger)}
       ref={composeRefs(group.triggerRef, forwardedRef)}
       type="button"
     >

@@ -30,11 +30,11 @@ export function App() {
           window.location.hash = value
         }}
       />
-      <main className="min-h-screen px-8 py-12 md:ml-[var(--sidebar-width-expanded)] md:px-12 md:py-16">
+      <main className="min-h-screen px-8 py-12 transition-[margin] duration-[var(--sidebar-motion-normal)] ease-standard md:ml-[var(--sidebar-width-expanded)] md:px-12 md:py-16 md:peer-data-[variant=desktop-collapsed]/sidebar:ml-[var(--sidebar-width-collapsed)]">
         <div className="mx-auto max-w-4xl space-y-8">
           <header className="space-y-3">
             <p className="text-xs/4 font-medium uppercase tracking-wider text-text-active">
-              Expanded desktop
+              Headless sidebar
             </p>
             <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
               Navigation workspace
@@ -50,12 +50,12 @@ export function App() {
             className="rounded-flyout border border-border-default bg-surface-navigation p-6 shadow-flyout"
           >
             <h2 id="phase-summary" className="text-lg font-semibold">
-              Phase 5 preview
+              Desktop navigation preview
             </h2>
             <p className="mt-2 text-sm/6 text-text-secondary">
-              Select Products to open its inline submenu and continue to
-              Catalog. The active child keeps its parent open and visually
-              distinct.
+              Use the footer control to switch sidebar width. Products renders
+              inline while expanded and as an interactive flyout while
+              collapsed.
             </p>
           </section>
         </div>

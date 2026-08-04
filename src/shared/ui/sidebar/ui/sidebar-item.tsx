@@ -98,7 +98,11 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
       onSelect?.(value)
 
       if (root.state.variant !== 'desktop-expanded') {
-        root.setOpenGroupId(null)
+        if (group) {
+          group.dismiss()
+        } else {
+          root.setOpenGroupId(null)
+        }
       }
     }
 

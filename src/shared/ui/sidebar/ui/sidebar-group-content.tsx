@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import type { ComponentPropsWithoutRef } from 'react'
 
+import { composeRefs } from '../lib/compose-refs'
 import { useSidebarGroupContext } from '../model/sidebar-context'
 import {
   resolveStateClassName,
@@ -31,7 +32,7 @@ export const SidebarGroupContent = forwardRef<
       className={resolveStateClassName(className, group.state)}
       hidden={!group.state.open}
       id={group.contentId}
-      ref={forwardedRef}
+      ref={composeRefs(group.contentRef, forwardedRef)}
     >
       {children}
     </div>

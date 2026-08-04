@@ -16,7 +16,10 @@ type SidebarRootContextValue = {
 }
 
 type SidebarGroupContextValue = {
+  activateTrigger: () => void
   contentId: string
+  contentRef: RefObject<HTMLDivElement | null>
+  dismiss: () => void
   entryValue?: string
   explicitlyOpen: boolean
   id: string
