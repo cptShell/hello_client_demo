@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+
+# Build and test output
+dist
+coverage
+
+# Local environment
+*.local
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor settings
+.idea
+.vscode/*
+!.vscode/extensions.json
+
+# Local agent context and internal planning
+AGENTS.md
+CLAUDE.md
+.agents/
+.codex/
+docs/
