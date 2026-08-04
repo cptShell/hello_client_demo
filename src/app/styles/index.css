@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "./tokens.css";
 
+@keyframes sidebar-sheet-enter {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
 @layer base {
   :root {
     color-scheme: light;

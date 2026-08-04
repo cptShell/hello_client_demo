@@ -1,4 +1,11 @@
-import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  forwardRef,
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import type { ComponentPropsWithoutRef } from 'react'
 
 import { useControllableState } from '@/shared/lib/use-controllable-state'
@@ -78,7 +85,7 @@ export const SidebarRoot = forwardRef<HTMLElement, SidebarRootProps>(
     const previousVariantRef = useRef(variant)
     const activeParentId = itemParents.get(value) ?? null
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       if (previousVariantRef.current === variant) {
         return
       }

@@ -87,6 +87,15 @@ export const SidebarGroup = forwardRef<HTMLLIElement, SidebarGroupProps>(
     const contentId = `sidebar-group-${id}-content`
     useEffect(() => registerGroup(id), [id, registerGroup])
 
+    useEffect(() => {
+      if (active && root.state.variant === 'mobile') {
+        triggerRef.current?.scrollIntoView?.({
+          block: 'nearest',
+          inline: 'nearest',
+        })
+      }
+    }, [active, root.state.variant])
+
     const clearPointerGraceTimer = useCallback(() => {
       if (pointerGraceTimerRef.current === null) {
         return

@@ -1,4 +1,11 @@
-import { Fragment, cloneElement, forwardRef, isValidElement, useEffect } from 'react'
+import {
+  Fragment,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  useEffect,
+  useRef,
+} from 'react'
 import type {
   ComponentPropsWithoutRef,
   CSSProperties,
@@ -74,6 +81,7 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
   ) {
     const root = useSidebarRootContext()
     const group = useOptionalSidebarGroupContext()
+    const interactiveRef = useRef<HTMLElement>(null)
     const registerItem = root.registerItem
     const active = root.state.value === value
     const state: SidebarItemState = {
@@ -87,6 +95,15 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
       () => registerItem(value, group?.id ?? null),
       [group?.id, registerItem, value],
     )
+
+    useEffect(() => {
+      if (active && !group && root.state.variant === 'mobile') {
+        interactiveRef.current?.scrollIntoView?.({
+          block: 'nearest',
+          inline: 'nearest',
+        })
+      }
+    }, [active, group, root.state.variant])
 
     const handleSelection = (event: MouseEvent<HTMLElement>) => {
       if (disabled) {
@@ -115,7 +132,10 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
             className={stateClassName}
             disabled={disabled}
             onClick={composeEventHandlers(onClick, handleSelection)}
-            ref={forwardedRef as Ref<HTMLButtonElement>}
+            ref={composeRefs(
+              interactiveRef,
+              forwardedRef,
+            ) as Ref<HTMLButtonElement>}
             style={style}
             type="button"
           >
@@ -138,7 +158,7 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
             interactiveProps['aria-disabled']),
         className: joinClassNames(child.props.className, stateClassName),
         onClick: composeEventHandlers(consumerClick, handleSelection),
-        ref: composeRefs(child.props.ref, forwardedRef),
+        ref: composeRefs(child.props.ref, interactiveRef, forwardedRef),
         style: { ...child.props.style, ...style },
         tabIndex: disabled
           ? -1

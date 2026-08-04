@@ -30,7 +30,7 @@ export function App() {
           window.location.hash = value
         }}
       />
-      <main className="min-h-screen px-8 py-12 transition-[margin] duration-[var(--sidebar-motion-normal)] ease-standard md:ml-[var(--sidebar-width-expanded)] md:px-12 md:py-16 md:peer-data-[variant=desktop-collapsed]/sidebar:ml-[var(--sidebar-width-collapsed)]">
+      <main className="min-h-screen px-8 pb-[calc(var(--sidebar-mobile-height)+var(--sidebar-safe-area-bottom)+2rem)] pt-12 transition-[margin] duration-[var(--sidebar-motion-normal)] ease-standard md:ml-[var(--sidebar-width-expanded)] md:px-12 md:py-16 md:peer-data-[variant=desktop-collapsed]/sidebar:ml-[var(--sidebar-width-collapsed)]">
         <div className="mx-auto max-w-4xl space-y-8">
           <header className="space-y-3">
             <p className="text-xs/4 font-medium uppercase tracking-wider text-text-active">
