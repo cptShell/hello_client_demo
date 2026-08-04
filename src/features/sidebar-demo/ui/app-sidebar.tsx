@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import {
   CalendarDays,
   ChartPie,
@@ -22,7 +22,14 @@ import type {
 
 type SidebarRootProps = ComponentProps<typeof Sidebar.Root>
 
-type AppSidebarProps = Omit<SidebarRootProps, 'children'>
+export type AppSidebarLinkProps = {
+  children: ReactNode
+  to: string
+}
+
+type AppSidebarProps = Omit<SidebarRootProps, 'children'> & {
+  renderLink?: (props: AppSidebarLinkProps) => ReactElement
+}
 
 const rootBaseClassName =
   'group/sidebar fixed z-[var(--sidebar-z-navigation)] flex bg-surface-navigation text-text-primary'
@@ -52,6 +59,14 @@ function resolveRootClassName(
   state: SidebarRootState,
 ) {
   return typeof className === 'function' ? className(state) : className
+}
+
+function getNavigationLink(
+  renderLink: AppSidebarProps['renderLink'],
+  to: string,
+  children: ReactNode,
+) {
+  return renderLink?.({ children, to }) ?? <a href={`#${to}`}>{children}</a>
 }
 
 function getRootClassName(state: SidebarRootState) {
@@ -140,7 +155,8 @@ function getSubmenuItemClassName({ active, variant }: SidebarItemState) {
 export function AppSidebar({
   'aria-label': ariaLabel = 'Primary',
   className,
-  defaultValue = '/products/featured',
+  defaultValue = '/overview',
+  renderLink,
   ...rootProps
 }: AppSidebarProps) {
   return (
@@ -179,40 +195,60 @@ export function AppSidebar({
         )}
       >
         <Sidebar.Item asChild className={getItemClassName} value="/overview">
-          <a href="#/overview">
-            <LayoutDashboard aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Overview</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/overview',
+            <>
+              <LayoutDashboard aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Overview</span>
+            </>,
+          )}
         </Sidebar.Item>
 
         <Sidebar.Item asChild className={getItemClassName} value="/clients">
-          <a href="#/clients">
-            <UsersRound aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Clients</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/clients',
+            <>
+              <UsersRound aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Clients</span>
+            </>,
+          )}
         </Sidebar.Item>
 
         <Sidebar.Item asChild className={getItemClassName} value="/calendar">
-          <a href="#/calendar">
-            <CalendarDays aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Calendar</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/calendar',
+            <>
+              <CalendarDays aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Calendar</span>
+            </>,
+          )}
         </Sidebar.Item>
 
         <Sidebar.Item asChild className={getItemClassName} value="/analytics">
-          <a href="#/analytics">
-            <ChartPie aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Analytics</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/analytics',
+            <>
+              <ChartPie aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Analytics</span>
+            </>,
+          )}
         </Sidebar.Item>
 
         <Sidebar.Separator className={separatorClassName} />
 
         <Sidebar.Item asChild className={getItemClassName} value="/campaigns">
-          <a href="#/campaigns">
-            <Megaphone aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Campaigns</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/campaigns',
+            <>
+              <Megaphone aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Campaigns</span>
+            </>,
+          )}
         </Sidebar.Item>
 
         <Sidebar.Group
@@ -252,39 +288,49 @@ export function AppSidebar({
                 className={getSubmenuItemClassName}
                 value="/products/catalog"
               >
-                <a href="#/products/catalog">
-                  <span className={submenuLabelClassName}>Catalog</span>
-                </a>
+                {getNavigationLink(
+                  renderLink,
+                  '/products/catalog',
+                  <span className={submenuLabelClassName}>Catalog</span>,
+                )}
               </Sidebar.Item>
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
                 value="/products/categories"
               >
-                <a href="#/products/categories">
-                  <span className={submenuLabelClassName}>Categories</span>
-                </a>
+                {getNavigationLink(
+                  renderLink,
+                  '/products/categories',
+                  <span className={submenuLabelClassName}>Categories</span>,
+                )}
               </Sidebar.Item>
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
                 value="/products/featured"
               >
-                <a href="#/products/featured">
+                {getNavigationLink(
+                  renderLink,
+                  '/products/featured',
                   <span className={submenuLabelClassName}>
                     Featured products
-                  </span>
-                </a>
+                  </span>,
+                )}
               </Sidebar.Item>
             </Sidebar.List>
           </Sidebar.GroupContent>
         </Sidebar.Group>
 
         <Sidebar.Item asChild className={getItemClassName} value="/billing">
-          <a href="#/billing">
-            <CircleDollarSign aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Billing</span>
-          </a>
+          {getNavigationLink(
+            renderLink,
+            '/billing',
+            <>
+              <CircleDollarSign aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Billing</span>
+            </>,
+          )}
         </Sidebar.Item>
       </Sidebar.List>
 

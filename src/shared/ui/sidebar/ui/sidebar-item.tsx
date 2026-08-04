@@ -4,6 +4,7 @@ import {
   forwardRef,
   isValidElement,
   useEffect,
+  useLayoutEffect,
   useRef,
 } from 'react'
 import type {
@@ -91,7 +92,7 @@ export const SidebarItem = forwardRef<HTMLElement, SidebarItemProps>(
     }
     const stateClassName = resolveStateClassName(className, state)
 
-    useEffect(
+    useLayoutEffect(
       () => registerItem(value, group?.id ?? null),
       [group?.id, registerItem, value],
     )
