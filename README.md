@@ -1,55 +1,230 @@
-# HelloClient Headless Sidebar Test Task
+# HelloClient Headless Sidebar
 
-This project implements the HelloClient test assignment: reusable headless sidebar navigation in React and TypeScript, with a Tailwind-styled consumer, React Router integration, and mobile adaptation.
+Тестовое задание на реализацию переиспользуемой навигации, в которой логика
+отделена от внешнего вида. Компоненты меню отвечают за состояние, доступность и
+взаимодействия. React Router, `localStorage`, иконки и стили Tailwind подключаются
+только в компоненте, который использует базовую логику.
 
-## Status
+Исходное задание: [HelloClient test task](https://helloclient.notion.site/HelloClient-28cc51068cd580409c8cff7e0eb65b7d).
+Деплой демо: [H](https://cptshell.github.io/hello_client_demo/)
 
-Phase 1 project scaffolding is complete. The current application is a smoke target for the toolchain and does not implement sidebar behavior yet.
+## Что реализовано по требованиям
 
-## Prerequisites
+**Выполнено: 8 из 8 требований + [Extrascope](#extrascope).**
 
-- Node.js `22.13.0` or newer. Node 22 is recorded in `.nvmrc`.
+1. **React, TypeScript и Tailwind CSS**
+
+   Проект реализован на React со строгой типизацией TypeScript. Внешний вид собран через
+   Tailwind CSS 4 и использует семантические токены, описанные в CSS.
+
+2. **Логика соответствует видео и макетам**
+
+   Реализованы раскрытое и свёрнутое боковое меню для компьютера, вложенная группа,
+   всплывающее подменю, нижняя навигация для мобильных устройств и модальная нижняя панель.
+   Поддерживаются анимации, активные состояния, вертикальный и горизонтальный
+   скролл, а также восстановление выбранного состояния бокового меню.
+
+3. **Меню через JSX без конфигурационных объектов**
+
+   Структура меню декларативно собрана из компонентов `Sidebar.*`, записанных через JSX. Массивов
+   конфигурации и рекурсивного рендера пунктов нет.
+
+4. **Интеграция с внешним состоянием**
+
+   Публичный API поддерживает управляемый и внутренний режимы: `value` /
+   `defaultValue`, `expanded` / `defaultExpanded`, `openGroupId` /
+   `defaultOpenGroupId` и соответствующие обработчики изменений. В проекте показаны три
+   интеграции:
+
+   - React Router управляет активным маршрутом;
+   - `localStorage` сохраняет состояние свёрнутого бокового меню;
+   - React `useState` управляет независимым компактным примером.
+
+5. **Логика отделена от внешнего вида**
+
+   `src/shared/ui/sidebar` содержит только логику состояния, семантическую разметку,
+   ARIA атрибуты, управление фокусом и обработку событий. В этом слое нет
+   React Router, классов Tailwind и иконок. Внешний вид добавляется в
+   `src/features/sidebar-demo`.
+
+6. **Интеграция с React Router за пределами базовых компонентов**
+
+   Основное меню связано с `HashRouter` через внешний слой интеграции. `Link`
+   передаётся в `Sidebar.Item` через `asChild`; базовый слой ничего не знает о
+   маршрутах. Прямые URL, перезагрузка страницы и кнопки браузера «Назад» и «Вперёд»
+   синхронизируют активный пункт и родительскую группу.
+
+7. **Полезные комментарии в коде**
+
+   Комментарии оставлены точечно там, где причина поведения не следует из кода
+   напрямую — например, запасной сценарий при недоступном `localStorage`. Очевидные
+   участки не дублируются шумовыми комментариями.
+
+8. **Мобильный вариант**
+
+   При ширине окна меньше `768px` боковое меню превращается в нижнюю навигацию.
+   Пункты занимают доступную ширину, а при переполнении прокручиваются
+   горизонтально. Вложенная группа открывается в модальной нижней панели с затемнением фона,
+   удержанием фокуса, блокировкой прокрутки страницы и учётом безопасной области экрана.
+
+## Extrascope
+
+Дополнительно к основным требованиям реализовано:
+
+- **Полное управление с клавиатуры.** `Tab` и `Shift+Tab` перемещают фокус между
+  ссылками и кнопками, `Enter` открывает ссылку или активирует кнопку, `Space`
+  активирует кнопку, а `Escape` закрывает вложенное меню или мобильное
+  модальное окно.
+- **Управление фокусом.** Фокус всегда виден и после закрытия меню возвращается к
+  открывшему его элементу. Внутри мобильной модальной панели фокус остаётся до её
+  закрытия.
+- **Расширенная доступность.** Используются нативная семантика ссылок и кнопок,
+  ARIA атрибуты, семантика модального диалога, минимальная интерактивная область
+  `44 x 44px` и поддержка `prefers-reduced-motion`.
+- **Визуальные улучшения.** Добавлены лёгкие CSS анимации: горизонтальная для раскрытия и
+  сворачивания меню, а также вертикальная для открытия и закрытия вложенной группы.
+- **Поведенческие тесты.** Автоматически проверяются управляемые и внутренние
+  состояния, интеграция с Router, переходы между адаптивными режимами, жизненный цикл фокуса,
+  всплывающее подменю и мобильная модальная панель.
+
+## Где смотреть примеры
+
+После запуска откройте [http://localhost:5173/#/trends](http://localhost:5173/#/trends).
+
+- Основное боковое меню демонстрирует интеграцию с React Router.
+- Первая секция страницы содержит компактный пример на `useState`.
+- Оба примера собраны из одного публичного набора базовых компонентов `Sidebar.*`.
+- Выбор пункта в компактном примере обновляет локальное значение, но не меняет
+  URL.
+
+Для проверки вложенного маршрута можно сразу открыть
+[http://localhost:5173/#/inventory/products](http://localhost:5173/#/inventory/products).
+
+## Стек
+
+### Основной
+
+| Технология | Версия | Назначение |
+|---|---:|---|
+| React | `19.2.8` | Компоненты и хуки |
+| TypeScript | `6.0.3` | Строгая типизация и контракты API |
+| Tailwind CSS | `4.3.3` | Стилизация внешнего вида |
+| React Router | `7.18.2` | Демонстрация внешнего состояния маршрутов |
+| Vite | `8.2.0` | Сервер для разработки и сборка для публикации |
+| lucide-react | `1.28.0` | SVG иконки во внешнем компоненте |
+
+### Тестирование и качество
+
+| Инструмент | Версия | Назначение |
+|---|---:|---|
+| Vitest | `4.1.10` | Модульные и интеграционные тесты |
+| React Testing Library | `16.3.2` | Проверка поведения через семантику DOM |
+| Testing Library user-event | `14.6.3` | События мыши и клавиатуры |
+| jsdom | `29.1.1` | Браузерная среда DOM для тестов |
+| ESLint | `10.8.0` | Статический анализ TypeScript и React |
+
+Все прямые и транзитивные зависимости зафиксированы в `package.json` и
+`package-lock.json`.
+
+## Публичный API
+
+```tsx
+<Sidebar.Root value={value} onValueChange={setValue}>
+  <Sidebar.List>
+    <Sidebar.Item asChild value="/trends">
+      <Link to="/trends">Trends</Link>
+    </Sidebar.Item>
+
+    <Sidebar.Group id="inventory" entryValue="/inventory/products">
+      <Sidebar.GroupTrigger>Inventory</Sidebar.GroupTrigger>
+      <Sidebar.GroupContent title="Inventory">
+        <Sidebar.List>
+          <Sidebar.Item asChild value="/inventory/products">
+            <Link to="/inventory/products">Products</Link>
+          </Sidebar.Item>
+        </Sidebar.List>
+      </Sidebar.GroupContent>
+    </Sidebar.Group>
+  </Sidebar.List>
+
+  <Sidebar.CollapseTrigger />
+</Sidebar.Root>
+```
+
+`Link` в этом фрагменте определён во внешнем компоненте. Сам пакет
+`Sidebar.*` не импортирует React Router.
+
+## Адаптивные режимы
+
+| Условие | Представление | Вложенная группа |
+|---|---|---|
+| `width >= 768px`, меню раскрыто | Боковое меню шириной `256px` | Встроенное подменю |
+| `width >= 768px`, меню свёрнуто | Боковое меню шириной `72px` | Всплывающее подменю |
+| `width < 768px` | Нижняя навигация | Модальная нижняя панель |
+
+При смене режима временные всплывающие элементы закрываются, а состояние бокового меню
+сохраняется в `expanded`. Активный дочерний маршрут автоматически активирует родительскую
+группу.
+
+## Архитектура
+
+Проект использует упрощённую структуру по FSD:
+
+```text
+src/
+├── app/                       # Провайдеры, Router и глобальные стили
+├── pages/                     # Страницы маршрутов
+├── features/sidebar-demo/     # Внешний вид и интеграции
+└── shared/
+    ├── lib/                   # Переиспользуемые хуки
+    └── ui/sidebar/            # Базовые компоненты Sidebar
+```
+
+Направление зависимостей: `app → pages → features → shared`.
+
+```text
+React Router / useState / localStorage
+                  ↓
+          Слой интеграции
+                  ↓
+       Компонент со стилями Tailwind
+                  ↓
+        Базовые компоненты Sidebar
+```
+
+## Доступность
+
+- Семантические `nav`, `ul`, `li`, ссылки и кнопки.
+- `aria-current`, `aria-expanded`, `aria-controls` и доступные названия.
+- Последовательный переход по `Tab` и видимая рамка фокуса через `focus-visible`.
+- Возврат фокуса после закрытия всплывающего подменю или модальной нижней панели.
+- Удержание фокуса и `aria-modal` для мобильного диалога.
+- Минимальная интерактивная область `44 x 44px`.
+- Поддержка `prefers-reduced-motion`.
+
+## Запуск
+
+Требования:
+
+- Node.js `22.13.0` или новее;
 - npm.
 
-## Setup
-
-The project uses only public npm packages. If your global npm configuration points to a private registry, select the public registry for the install command:
+Версия Node 22 зафиксирована в `.nvmrc`.
 
 ```bash
 npm ci --registry=https://registry.npmjs.org
+npm run dev
 ```
 
-## Commands
+Vite запустит проект по адресу [http://localhost:5173](http://localhost:5173).
+
+## Команды
 
 ```bash
-npm run dev
-npm run type-check
-npm run lint
-npm test -- --run
-npm run build
-npm run preview
+npm run dev          # Сервер для разработки
+npm run type-check   # Проверка типов TypeScript
+npm run lint         # ESLint
+npm test -- --run    # Модульные и интеграционные тесты
+npm run build        # Проверка TypeScript и сборка для публикации
+npm run preview      # Локальный просмотр итоговой сборки
 ```
-
-The Vite development server uses `http://localhost:5173` by default.
-
-## Core Principles
-
-- JSX compound components instead of menu configuration.
-- Headless behavior is independent of React Router and Tailwind.
-- Desktop expanded, desktop collapsed, and mobile bottom navigation use one state machine.
-- Collapsed submenu uses an accessible flyout.
-- Mobile submenu uses a modal bottom sheet.
-- Router and `useState` examples share one public component API.
-
-## Stack
-
-- React.
-- TypeScript strict.
-- Vite.
-- Tailwind CSS.
-- React Router.
-- Vitest and React Testing Library.
-- `lucide-react`.
-- GitHub Pages.
-
-Dependency versions are pinned in `package.json` and `package-lock.json`.
