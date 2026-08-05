@@ -26,15 +26,15 @@ afterEach(() => {
 
 describe('App Router integration', () => {
   it('derives the active child and parent from a direct nested route', () => {
-    window.history.replaceState(null, '', '/#/products/categories')
+    window.history.replaceState(null, '', '/#/inventory/orders')
 
     render(<App />)
 
-    expect(screen.getByRole('link', { name: 'Categories' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Orders' })).toHaveAttribute(
       'aria-current',
       'page',
     )
-    expect(screen.getByRole('button', { name: 'Products' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Inventory' })).toHaveAttribute(
       'aria-expanded',
       'true',
     )
@@ -45,10 +45,10 @@ describe('App Router integration', () => {
     window.history.replaceState(null, '', '/#/clients')
     render(<App />)
 
-    await user.click(screen.getByRole('link', { name: 'Calendar' }))
+    await user.click(screen.getByRole('link', { name: 'Tickets' }))
 
-    expect(window.location.hash).toBe('#/calendar')
-    expect(screen.getByRole('link', { name: 'Calendar' })).toHaveAttribute(
+    expect(window.location.hash).toBe('#/tickets')
+    expect(screen.getByRole('link', { name: 'Tickets' })).toHaveAttribute(
       'aria-current',
       'page',
     )
@@ -65,7 +65,7 @@ describe('App Router integration', () => {
     act(() => window.history.forward())
 
     await waitFor(() => {
-      expect(screen.getByRole('link', { name: 'Calendar' })).toHaveAttribute(
+      expect(screen.getByRole('link', { name: 'Tickets' })).toHaveAttribute(
         'aria-current',
         'page',
       )
@@ -77,10 +77,10 @@ describe('App Router integration', () => {
     window.history.replaceState(null, '', '/#/clients')
     render(<App />)
 
-    await user.click(screen.getByRole('button', { name: 'Products' }))
+    await user.click(screen.getByRole('button', { name: 'Inventory' }))
 
-    expect(window.location.hash).toBe('#/products/catalog')
-    expect(screen.getByRole('link', { name: 'Catalog' })).toHaveAttribute(
+    expect(window.location.hash).toBe('#/inventory/products')
+    expect(screen.getByRole('link', { name: 'Products' })).toHaveAttribute(
       'aria-current',
       'page',
     )

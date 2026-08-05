@@ -3,7 +3,6 @@ import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { RouterSidebarExample } from '@/features/sidebar-demo'
 import { PlaceholderPage } from '@/pages/placeholder'
 import { RouterDemoPage } from '@/pages/router-demo'
-import { StateDemoPage } from '@/pages/state-demo'
 
 function ApplicationLayout() {
   return (
@@ -21,8 +20,35 @@ export function AppRouterProvider() {
     <HashRouter>
       <Routes>
         <Route element={<ApplicationLayout />}>
-          <Route index element={<Navigate replace to="/overview" />} />
-          <Route element={<RouterDemoPage />} path="overview" />
+          <Route index element={<Navigate replace to="/trends" />} />
+          <Route element={<RouterDemoPage />} path="trends" />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Review and manage upcoming work from this route placeholder."
+                title="Tasks"
+              />
+            }
+            path="tasks"
+          />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Track customer requests from this route placeholder."
+                title="Tickets"
+              />
+            }
+            path="tickets"
+          />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Review account transactions from this route placeholder."
+                title="Payments"
+              />
+            }
+            path="payments"
+          />
           <Route
             element={
               <PlaceholderPage
@@ -32,74 +58,82 @@ export function AppRouterProvider() {
             }
             path="clients"
           />
-          <Route
-            element={
-              <PlaceholderPage
-                description="Plan appointments and upcoming customer activities from this route placeholder."
-                title="Calendar"
-              />
-            }
-            path="calendar"
-          />
-          <Route
-            element={
-              <PlaceholderPage
-                description="Inspect performance indicators from this route placeholder."
-                title="Analytics"
-              />
-            }
-            path="analytics"
-          />
-          <Route
-            element={
-              <PlaceholderPage
-                description="Coordinate customer communication from this route placeholder."
-                title="Campaigns"
-              />
-            }
-            path="campaigns"
-          />
-          <Route path="products">
-            <Route index element={<Navigate replace to="catalog" />} />
+          <Route path="inventory">
+            <Route index element={<Navigate replace to="products" />} />
             <Route
               element={
                 <PlaceholderPage
-                  description="Browse the complete product collection from this nested route placeholder."
-                  title="Catalog"
+                  description="Browse and manage products from this nested route placeholder."
+                  title="Products"
                 />
               }
-              path="catalog"
+              path="products"
             />
             <Route
               element={
                 <PlaceholderPage
-                  description="Organize the catalog structure from this nested route placeholder."
-                  title="Categories"
+                  description="Review inventory orders from this nested route placeholder."
+                  title="Orders"
                 />
               }
-              path="categories"
+              path="orders"
             />
             <Route
               element={
                 <PlaceholderPage
-                  description="Curate highlighted products from this nested route placeholder."
-                  title="Featured products"
+                  description="Manage inventory suppliers from this nested route placeholder."
+                  title="Suppliers"
                 />
               }
-              path="featured"
+              path="suppliers"
             />
           </Route>
           <Route
             element={
               <PlaceholderPage
-                description="Review account charges from this route placeholder."
-                title="Billing"
+                description="Browse available offers from this route placeholder."
+                title="Shop"
               />
             }
-            path="billing"
+            path="shop"
           />
-          <Route element={<StateDemoPage />} path="state-example" />
-          <Route element={<Navigate replace to="/overview" />} path="*" />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Inspect performance reports from this route placeholder."
+                title="Reports"
+              />
+            }
+            path="reports"
+          />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Review tender activity from this route placeholder."
+                title="Tender"
+              />
+            }
+            path="tender"
+          />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Manage workspace preferences from this route placeholder."
+                title="Settings"
+              />
+            }
+            path="settings"
+          />
+          <Route
+            element={
+              <PlaceholderPage
+                description="Browse workspace guidance from this route placeholder."
+                title="Knowledge Base"
+              />
+            }
+            path="knowledge-base"
+          />
+          <Route element={<Navigate replace to="/trends" />} path="*" />
         </Route>
       </Routes>
     </HashRouter>

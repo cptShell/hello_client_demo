@@ -1,15 +1,18 @@
 import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import {
-  CalendarDays,
-  ChartPie,
+  Archive,
+  ChartNoAxesColumn,
   ChevronDown,
-  CircleDollarSign,
-  LayoutDashboard,
-  Megaphone,
-  PackageSearch,
+  CircleCheckBig,
+  CircleHelp,
+  CreditCard,
+  Flame,
   PanelLeftClose,
   PanelLeftOpen,
-  UsersRound,
+  Settings,
+  ShoppingCart,
+  Smile,
+  TicketCheck,
   X,
 } from 'lucide-react'
 
@@ -145,7 +148,7 @@ function getSubmenuItemClassName({ active, variant }: SidebarItemState) {
     itemBaseClassName,
     variant === 'desktop-collapsed' || variant === 'mobile'
       ? 'px-3 font-normal'
-      : 'pl-10 font-normal',
+      : 'pl-7 font-normal',
     active
       ? 'bg-surface-active-strong text-text-active'
       : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
@@ -155,7 +158,7 @@ function getSubmenuItemClassName({ active, variant }: SidebarItemState) {
 export function AppSidebar({
   'aria-label': ariaLabel = 'Primary',
   className,
-  defaultValue = '/overview',
+  defaultValue = '/trends',
   renderLink,
   ...rootProps
 }: AppSidebarProps) {
@@ -194,13 +197,49 @@ export function AppSidebar({
           'mt-3 min-h-0 flex flex-1 flex-col gap-1 overflow-y-auto overscroll-contain group-data-[variant=mobile]/sidebar:mt-0 group-data-[variant=mobile]/sidebar:flex-row group-data-[variant=mobile]/sidebar:overflow-x-auto group-data-[variant=mobile]/sidebar:overflow-y-hidden group-data-[variant=mobile]/sidebar:[&>li]:min-w-[var(--sidebar-mobile-item-width)] group-data-[variant=mobile]/sidebar:[&>li]:flex-1 group-data-[variant=mobile]/sidebar:[&>li]:shrink-0',
         )}
       >
-        <Sidebar.Item asChild className={getItemClassName} value="/overview">
+        <Sidebar.Item asChild className={getItemClassName} value="/trends">
           {getNavigationLink(
             renderLink,
-            '/overview',
+            '/trends',
             <>
-              <LayoutDashboard aria-hidden="true" className={iconClassName} />
-              <span className={navigationLabelClassName}>Overview</span>
+              <ChartNoAxesColumn
+                aria-hidden="true"
+                className={iconClassName}
+              />
+              <span className={navigationLabelClassName}>Trends</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item asChild className={getItemClassName} value="/tasks">
+          {getNavigationLink(
+            renderLink,
+            '/tasks',
+            <>
+              <CircleCheckBig aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Tasks</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item asChild className={getItemClassName} value="/tickets">
+          {getNavigationLink(
+            renderLink,
+            '/tickets',
+            <>
+              <TicketCheck aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Tickets</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item asChild className={getItemClassName} value="/payments">
+          {getNavigationLink(
+            renderLink,
+            '/payments',
+            <>
+              <CreditCard aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Payments</span>
             </>,
           )}
         </Sidebar.Item>
@@ -210,55 +249,20 @@ export function AppSidebar({
             renderLink,
             '/clients',
             <>
-              <UsersRound aria-hidden="true" className={iconClassName} />
+              <Smile aria-hidden="true" className={iconClassName} />
               <span className={navigationLabelClassName}>Clients</span>
-            </>,
-          )}
-        </Sidebar.Item>
-
-        <Sidebar.Item asChild className={getItemClassName} value="/calendar">
-          {getNavigationLink(
-            renderLink,
-            '/calendar',
-            <>
-              <CalendarDays aria-hidden="true" className={iconClassName} />
-              <span className={navigationLabelClassName}>Calendar</span>
-            </>,
-          )}
-        </Sidebar.Item>
-
-        <Sidebar.Item asChild className={getItemClassName} value="/analytics">
-          {getNavigationLink(
-            renderLink,
-            '/analytics',
-            <>
-              <ChartPie aria-hidden="true" className={iconClassName} />
-              <span className={navigationLabelClassName}>Analytics</span>
-            </>,
-          )}
-        </Sidebar.Item>
-
-        <Sidebar.Separator className={separatorClassName} />
-
-        <Sidebar.Item asChild className={getItemClassName} value="/campaigns">
-          {getNavigationLink(
-            renderLink,
-            '/campaigns',
-            <>
-              <Megaphone aria-hidden="true" className={iconClassName} />
-              <span className={navigationLabelClassName}>Campaigns</span>
             </>,
           )}
         </Sidebar.Item>
 
         <Sidebar.Group
           className={getGroupClassName}
-          entryValue="/products/catalog"
-          id="products"
+          entryValue="/inventory/products"
+          id="inventory"
         >
           <Sidebar.GroupTrigger className={getGroupTriggerClassName}>
-            <PackageSearch aria-hidden="true" className={iconClassName} />
-            <span className={navigationLabelClassName}>Products</span>
+            <Archive aria-hidden="true" className={iconClassName} />
+            <span className={navigationLabelClassName}>Inventory</span>
             <ChevronDown
               aria-hidden="true"
               className="size-4 shrink-0 transition-transform duration-[var(--sidebar-motion-fast)] group-aria-expanded:rotate-180 group-data-[variant=desktop-collapsed]/sidebar:hidden group-data-[variant=mobile]/sidebar:hidden"
@@ -271,14 +275,14 @@ export function AppSidebar({
             closeContent={
               <X aria-hidden="true" className={iconClassName} />
             }
-            title="Products"
+            title="Inventory"
             titleClassName="pr-20 text-base/6 font-semibold text-text-primary"
           >
             <span
               aria-hidden="true"
               className="hidden px-3 pb-2 pt-1 text-xs/4 font-semibold uppercase tracking-wider text-text-secondary group-data-[variant=desktop-collapsed]/sidebar:block"
             >
-              Products
+              Inventory
             </span>
             <Sidebar.List
               className={joinClassNames(listClassName, 'mt-1')}
@@ -286,49 +290,118 @@ export function AppSidebar({
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
-                value="/products/catalog"
+                value="/inventory/products"
               >
                 {getNavigationLink(
                   renderLink,
-                  '/products/catalog',
-                  <span className={submenuLabelClassName}>Catalog</span>,
+                  '/inventory/products',
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="size-1 shrink-0 rounded-full bg-current"
+                    />
+                    <span className={submenuLabelClassName}>Products</span>
+                  </>,
                 )}
               </Sidebar.Item>
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
-                value="/products/categories"
+                value="/inventory/orders"
               >
                 {getNavigationLink(
                   renderLink,
-                  '/products/categories',
-                  <span className={submenuLabelClassName}>Categories</span>,
+                  '/inventory/orders',
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="size-1 shrink-0 rounded-full bg-current"
+                    />
+                    <span className={submenuLabelClassName}>Orders</span>
+                  </>,
                 )}
               </Sidebar.Item>
               <Sidebar.Item
                 asChild
                 className={getSubmenuItemClassName}
-                value="/products/featured"
+                value="/inventory/suppliers"
               >
                 {getNavigationLink(
                   renderLink,
-                  '/products/featured',
-                  <span className={submenuLabelClassName}>
-                    Featured products
-                  </span>,
+                  '/inventory/suppliers',
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="size-1 shrink-0 rounded-full bg-current"
+                    />
+                    <span className={submenuLabelClassName}>Suppliers</span>
+                  </>,
                 )}
               </Sidebar.Item>
             </Sidebar.List>
           </Sidebar.GroupContent>
         </Sidebar.Group>
 
-        <Sidebar.Item asChild className={getItemClassName} value="/billing">
+        <Sidebar.Item asChild className={getItemClassName} value="/shop">
           {getNavigationLink(
             renderLink,
-            '/billing',
+            '/shop',
             <>
-              <CircleDollarSign aria-hidden="true" className={iconClassName} />
-              <span className={navigationLabelClassName}>Billing</span>
+              <ShoppingCart aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Shop</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item asChild className={getItemClassName} value="/reports">
+          {getNavigationLink(
+            renderLink,
+            '/reports',
+            <>
+              <ChartNoAxesColumn
+                aria-hidden="true"
+                className={iconClassName}
+              />
+              <span className={navigationLabelClassName}>Reports</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item asChild className={getItemClassName} value="/tender">
+          {getNavigationLink(
+            renderLink,
+            '/tender',
+            <>
+              <Flame aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Tender</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Separator className={separatorClassName} />
+
+        <Sidebar.Item asChild className={getItemClassName} value="/settings">
+          {getNavigationLink(
+            renderLink,
+            '/settings',
+            <>
+              <Settings aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Settings</span>
+            </>,
+          )}
+        </Sidebar.Item>
+
+        <Sidebar.Item
+          asChild
+          className={getItemClassName}
+          value="/knowledge-base"
+        >
+          {getNavigationLink(
+            renderLink,
+            '/knowledge-base',
+            <>
+              <CircleHelp aria-hidden="true" className={iconClassName} />
+              <span className={navigationLabelClassName}>Knowledge Base</span>
             </>,
           )}
         </Sidebar.Item>
