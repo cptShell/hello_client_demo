@@ -11,6 +11,8 @@ export function RouterMenuRoot({ ariaLabel = 'Primary', children }: RouterMenuRo
   const navigate = useNavigate()
   const linkNavigationRef = useRef(false)
 
+  // A regular Link owns its navigation; the root handler is reserved for
+  // button-driven selections such as a group's entry destination.
   const markLinkNavigation = useCallback(() => {
     linkNavigationRef.current = true
     queueMicrotask(() => { linkNavigationRef.current = false })

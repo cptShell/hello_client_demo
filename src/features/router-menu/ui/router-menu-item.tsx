@@ -24,6 +24,8 @@ export function RouterMenuItem({
   const initialToRef = useRef(to)
   const isSubmenuItem = group !== null
 
+  // Keep registration lifecycle separate from route updates so changing `to`
+  // preserves the item's original position in the group registry.
   useLayoutEffect(() => {
     if (!group) return
 
