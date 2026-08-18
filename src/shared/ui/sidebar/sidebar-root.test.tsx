@@ -75,7 +75,7 @@ describe('Sidebar.Root', () => {
     )
     expect(
       screen.getByRole('button', { name: 'Expand navigation' }),
-    ).toBeInTheDocument()
+    ).toHaveAttribute('aria-expanded', 'false')
     expect(onExpandedChange).not.toHaveBeenCalled()
   })
 
