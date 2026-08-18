@@ -92,21 +92,20 @@ describe('Sidebar.Group', () => {
     )
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
-    const group = trigger.closest('li')
+    const group = trigger.closest('li')!
 
-    expect(group).not.toBeNull()
-    fireEvent.pointerEnter(group!)
+    fireEvent.pointerEnter(group)
     expect(screen.getByLabelText('Clients')).toBeVisible()
 
-    fireEvent.pointerLeave(group!)
+    fireEvent.pointerLeave(group)
     act(() => vi.advanceTimersByTime(99))
     expect(screen.getByLabelText('Clients')).toBeVisible()
 
-    fireEvent.pointerEnter(group!)
+    fireEvent.pointerEnter(group)
     act(() => vi.advanceTimersByTime(1))
     expect(screen.getByLabelText('Clients')).toBeVisible()
 
-    fireEvent.pointerLeave(group!)
+    fireEvent.pointerLeave(group)
     act(() => vi.advanceTimersByTime(100))
     expect(screen.getByLabelText('Clients')).not.toBeVisible()
   })
@@ -125,12 +124,11 @@ describe('Sidebar.Group', () => {
     )
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
-    const group = trigger.closest('li')
+    const group = trigger.closest('li')!
 
-    expect(group).not.toBeNull()
-    fireEvent.pointerEnter(group!)
+    fireEvent.pointerEnter(group)
     fireEvent.click(trigger)
-    fireEvent.pointerLeave(group!)
+    fireEvent.pointerLeave(group)
     act(() => vi.advanceTimersByTime(100))
 
     expect(screen.getByLabelText('Clients')).toBeVisible()
@@ -314,11 +312,10 @@ describe('Sidebar.Group', () => {
     )
 
     const trigger = screen.getByRole('button', { name: 'Clients' })
-    const group = trigger.closest('li')
+    const group = trigger.closest('li')!
     const content = screen.getByLabelText('Clients')
 
-    expect(group).not.toBeNull()
-    fireEvent.pointerEnter(group!)
+    fireEvent.pointerEnter(group)
     expect(content).toHaveAttribute('aria-hidden', 'true')
 
     await user.tab()

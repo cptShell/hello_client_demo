@@ -54,7 +54,7 @@ describe('Sidebar mobile behavior', () => {
 
     expect(
       screen.getByRole('dialog', { name: 'Product navigation' }),
-    ).toBeInTheDocument()
+    ).toHaveAttribute('aria-modal', 'true')
     expect(screen.getByRole('button', { name: 'Close menu' })).toHaveFocus()
     expect(document.body.style.overflow).toBe('hidden')
 

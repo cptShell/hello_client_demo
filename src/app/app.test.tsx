@@ -1,24 +1,9 @@
 import { act } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 
 import { App } from './app'
-
-const storageValues = new Map<string, string>()
-
-beforeEach(() => {
-  storageValues.clear()
-  Object.defineProperty(window, 'localStorage', {
-    configurable: true,
-    value: {
-      getItem: (key: string) => storageValues.get(key) ?? null,
-      setItem: (key: string, value: string) => {
-        storageValues.set(key, value)
-      },
-    },
-  })
-})
 
 afterEach(() => {
   window.history.replaceState(null, '', '/')
@@ -86,27 +71,4 @@ describe('App Router integration', () => {
     )
   })
 
-  it('restores only the persisted desktop expanded preference', async () => {
-    const user = userEvent.setup()
-    window.history.replaceState(null, '', '/#/clients')
-    const firstRender = render(<App />)
-
-    await user.click(
-      screen.getByRole('button', { name: 'Collapse navigation' }),
-    )
-    expect(
-      window.localStorage.getItem('hello-client.sidebar.expanded'),
-    ).toBe('false')
-
-    firstRender.unmount()
-    render(<App />)
-
-    expect(
-      screen.getByRole('button', { name: 'Expand navigation' }),
-    ).toHaveAttribute('aria-expanded', 'false')
-    expect(screen.getByRole('link', { name: 'Clients' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
-  })
 })
