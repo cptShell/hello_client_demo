@@ -1,13 +1,13 @@
 import { HashRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
-import { RouterSidebarExample } from '@/features/sidebar-demo'
+import { ApplicationMenu } from '@/app/ui/application-menu'
 import { PlaceholderPage } from '@/pages/placeholder'
 import { RouterDemoPage } from '@/pages/router-demo'
 
 function ApplicationLayout() {
   return (
     <div className="min-h-screen bg-surface-page text-text-primary">
-      <RouterSidebarExample className="peer/sidebar" />
+      <ApplicationMenu />
       <main className="min-h-screen px-8 pb-[calc(var(--sidebar-mobile-height)+var(--sidebar-safe-area-bottom)+2rem)] pt-12 transition-[margin] duration-[var(--sidebar-motion-normal)] ease-standard md:ml-[var(--sidebar-width-expanded)] md:px-12 md:py-16 md:peer-data-[variant=desktop-collapsed]/sidebar:ml-[var(--sidebar-width-collapsed)]">
         <Outlet />
       </main>
