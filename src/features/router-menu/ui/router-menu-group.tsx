@@ -17,7 +17,11 @@ export function RouterMenuGroup({ children, icon, label }: RouterMenuGroupProps)
   return (
     <Sidebar.Group className={groupClassName} entryValue={entryValue} id={id}>
       <Sidebar.GroupTrigger className={groupTriggerClassName}>
-        {icon}
+        {icon ? (
+          <span aria-hidden="true" className={iconClassName}>
+            {icon}
+          </span>
+        ) : null}
         <span className={navigationLabelClassName}>{label}</span>
         <ChevronDown aria-hidden="true" className="ml-auto size-4 shrink-0 transition-transform duration-[var(--sidebar-motion-fast)] group-aria-expanded:rotate-180 group-data-[variant=desktop-collapsed]/sidebar:hidden group-data-[variant=mobile]/sidebar:hidden" />
       </Sidebar.GroupTrigger>

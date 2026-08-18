@@ -28,7 +28,9 @@ export function RouterMenuItem({ disabled, icon, label, to }: RouterMenuItemProp
             className="size-1 shrink-0 rounded-full bg-current"
           />
         ) : icon ? (
-          <span className={iconClassName}>{icon}</span>
+          <span aria-hidden="true" className={iconClassName}>
+            {icon}
+          </span>
         ) : null}
         <span
           className={

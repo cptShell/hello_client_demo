@@ -12,40 +12,37 @@ import {
 } from 'lucide-react'
 
 import { RouterMenu } from '@/features/router-menu'
-import { DecorativeIcon } from '@/shared/ui/icon'
 import { ROUTES, toPath } from '@/shared/config/routes'
+
 export function ApplicationMenu() {
   return (
     <RouterMenu>
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<ChartNoAxesColumn />} />}
+        icon={<ChartNoAxesColumn />}
         label="Trends"
         to={toPath(ROUTES.trends)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<CircleCheckBig />} />}
+        icon={<CircleCheckBig />}
         label="Tasks"
         to={toPath(ROUTES.tasks)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<TicketCheck />} />}
+        icon={<TicketCheck />}
         label="Tickets"
         to={toPath(ROUTES.tickets)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<CreditCard />} />}
+        icon={<CreditCard />}
         label="Payments"
         to={toPath(ROUTES.payments)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<Smile />} />}
+        icon={<Smile />}
         label="Clients"
         to={toPath(ROUTES.clients)}
       />
-      <RouterMenu.Group
-        icon={<DecorativeIcon icon={<Archive />} />}
-        label="Inventory"
-      >
+      <RouterMenu.Group icon={<Archive />} label="Inventory">
         <RouterMenu.Item
           label="Products"
           to={toPath(ROUTES.inventory.root, ROUTES.inventory.products)}
@@ -60,28 +57,28 @@ export function ApplicationMenu() {
         />
       </RouterMenu.Group>
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<ShoppingCart />} />}
+        icon={<ShoppingCart />}
         label="Shop"
         to={toPath(ROUTES.shop)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<ChartNoAxesColumn />} />}
+        icon={<ChartNoAxesColumn />}
         label="Reports"
         to={toPath(ROUTES.reports)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<Flame />} />}
+        icon={<Flame />}
         label="Tender"
         to={toPath(ROUTES.tender)}
       />
       <RouterMenu.Separator />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<Settings />} />}
+        icon={<Settings />}
         label="Settings"
         to={toPath(ROUTES.settings)}
       />
       <RouterMenu.Item
-        icon={<DecorativeIcon icon={<CircleHelp />} />}
+        icon={<CircleHelp />}
         label="Knowledge Base"
         to={toPath(ROUTES.knowledgeBase)}
       />
