@@ -13,67 +13,77 @@ import {
 
 import { RouterMenu } from '@/features/router-menu'
 import { DecorativeIcon } from '@/shared/ui/icon'
+import { ROUTES, toPath } from '@/shared/config/routes'
 export function ApplicationMenu() {
   return (
     <RouterMenu>
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<ChartNoAxesColumn />} />}
         label="Trends"
-        to="/trends"
+        to={toPath(ROUTES.trends)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<CircleCheckBig />} />}
         label="Tasks"
-        to="/tasks"
+        to={toPath(ROUTES.tasks)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<TicketCheck />} />}
         label="Tickets"
-        to="/tickets"
+        to={toPath(ROUTES.tickets)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<CreditCard />} />}
         label="Payments"
-        to="/payments"
+        to={toPath(ROUTES.payments)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<Smile />} />}
         label="Clients"
-        to="/clients"
+        to={toPath(ROUTES.clients)}
       />
       <RouterMenu.Group
         icon={<DecorativeIcon icon={<Archive />} />}
         label="Inventory"
       >
-        <RouterMenu.Item label="Products" to="/inventory/products" />
-        <RouterMenu.Item label="Orders" to="/inventory/orders" />
-        <RouterMenu.Item label="Suppliers" to="/inventory/suppliers" />
+        <RouterMenu.Item
+          label="Products"
+          to={toPath(ROUTES.inventory.root, ROUTES.inventory.products)}
+        />
+        <RouterMenu.Item
+          label="Orders"
+          to={toPath(ROUTES.inventory.root, ROUTES.inventory.orders)}
+        />
+        <RouterMenu.Item
+          label="Suppliers"
+          to={toPath(ROUTES.inventory.root, ROUTES.inventory.suppliers)}
+        />
       </RouterMenu.Group>
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<ShoppingCart />} />}
         label="Shop"
-        to="/shop"
+        to={toPath(ROUTES.shop)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<ChartNoAxesColumn />} />}
         label="Reports"
-        to="/reports"
+        to={toPath(ROUTES.reports)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<Flame />} />}
         label="Tender"
-        to="/tender"
+        to={toPath(ROUTES.tender)}
       />
       <RouterMenu.Separator />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<Settings />} />}
         label="Settings"
-        to="/settings"
+        to={toPath(ROUTES.settings)}
       />
       <RouterMenu.Item
         icon={<DecorativeIcon icon={<CircleHelp />} />}
         label="Knowledge Base"
-        to="/knowledge-base"
+        to={toPath(ROUTES.knowledgeBase)}
       />
     </RouterMenu>
   )

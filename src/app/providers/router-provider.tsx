@@ -3,14 +3,15 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { ApplicationShell } from '@/app/ui/application-shell'
 import { PlaceholderPage } from '@/pages/placeholder'
 import { RouterDemoPage } from '@/pages/router-demo'
+import { ROUTES, toPath } from '@/shared/config/routes'
 
 export function AppRouterProvider() {
   return (
     <HashRouter>
       <Routes>
         <Route element={<ApplicationShell />}>
-          <Route index element={<Navigate replace to="/trends" />} />
-          <Route element={<RouterDemoPage />} path="trends" />
+          <Route index element={<Navigate replace to={toPath(ROUTES.trends)} />} />
+          <Route element={<RouterDemoPage />} path={ROUTES.trends} />
           <Route
             element={
               <PlaceholderPage
@@ -18,7 +19,7 @@ export function AppRouterProvider() {
                 title="Tasks"
               />
             }
-            path="tasks"
+            path={ROUTES.tasks}
           />
           <Route
             element={
@@ -27,7 +28,7 @@ export function AppRouterProvider() {
                 title="Tickets"
               />
             }
-            path="tickets"
+            path={ROUTES.tickets}
           />
           <Route
             element={
@@ -36,7 +37,7 @@ export function AppRouterProvider() {
                 title="Payments"
               />
             }
-            path="payments"
+            path={ROUTES.payments}
           />
           <Route
             element={
@@ -45,10 +46,10 @@ export function AppRouterProvider() {
                 title="Clients"
               />
             }
-            path="clients"
+            path={ROUTES.clients}
           />
-          <Route path="inventory">
-            <Route index element={<Navigate replace to="products" />} />
+          <Route path={ROUTES.inventory.root}>
+            <Route index element={<Navigate replace to={ROUTES.inventory.products} />} />
             <Route
               element={
                 <PlaceholderPage
@@ -56,7 +57,7 @@ export function AppRouterProvider() {
                   title="Products"
                 />
               }
-              path="products"
+              path={ROUTES.inventory.products}
             />
             <Route
               element={
@@ -65,7 +66,7 @@ export function AppRouterProvider() {
                   title="Orders"
                 />
               }
-              path="orders"
+              path={ROUTES.inventory.orders}
             />
             <Route
               element={
@@ -74,7 +75,7 @@ export function AppRouterProvider() {
                   title="Suppliers"
                 />
               }
-              path="suppliers"
+              path={ROUTES.inventory.suppliers}
             />
           </Route>
           <Route
@@ -84,7 +85,7 @@ export function AppRouterProvider() {
                 title="Shop"
               />
             }
-            path="shop"
+            path={ROUTES.shop}
           />
           <Route
             element={
@@ -93,7 +94,7 @@ export function AppRouterProvider() {
                 title="Reports"
               />
             }
-            path="reports"
+            path={ROUTES.reports}
           />
           <Route
             element={
@@ -102,7 +103,7 @@ export function AppRouterProvider() {
                 title="Tender"
               />
             }
-            path="tender"
+            path={ROUTES.tender}
           />
           <Route
             element={
@@ -111,7 +112,7 @@ export function AppRouterProvider() {
                 title="Settings"
               />
             }
-            path="settings"
+            path={ROUTES.settings}
           />
           <Route
             element={
@@ -120,9 +121,9 @@ export function AppRouterProvider() {
                 title="Knowledge Base"
               />
             }
-            path="knowledge-base"
+            path={ROUTES.knowledgeBase}
           />
-          <Route element={<Navigate replace to="/trends" />} path="*" />
+          <Route element={<Navigate replace to={toPath(ROUTES.trends)} />} path="*" />
         </Route>
       </Routes>
     </HashRouter>
