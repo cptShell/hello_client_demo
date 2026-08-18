@@ -1,3 +1,4 @@
+import { useId, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Sidebar } from '@/shared/ui/sidebar'
 import { useRouterMenuContext } from '../model/router-menu-context'
@@ -11,9 +12,29 @@ import {
   submenuLabelClassName,
 } from './router-menu-styles'
 
-export function RouterMenuItem({ disabled, icon, label, to }: RouterMenuItemProps) {
+export function RouterMenuItem({
+  disabled,
+  icon,
+  label,
+  to,
+}: RouterMenuItemProps) {
   const { markLinkNavigation } = useRouterMenuContext()
-  const isSubmenuItem = useRouterMenuGroupContext()
+  const group = useRouterMenuGroupContext()
+  const routeId = useId()
+  const initialToRef = useRef(to)
+  const isSubmenuItem = group !== null
+
+  useLayoutEffect(() => {
+    if (!group) return
+
+    group.registerRoute(routeId, initialToRef.current)
+    return () => group.unregisterRoute(routeId)
+  }, [group, routeId])
+
+  useLayoutEffect(() => {
+    group?.updateRoute(routeId, to)
+  }, [group, routeId, to])
+
   return (
     <Sidebar.Item
       asChild

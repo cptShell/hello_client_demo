@@ -1,19 +1,78 @@
-import { Children, isValidElement, useId } from 'react'
+import { useCallback, useId, useMemo, useState } from 'react'
 import { ChevronDown, X } from 'lucide-react'
 import { Sidebar } from '@/shared/ui/sidebar'
-import type { RouterMenuGroupProps, RouterMenuItemProps } from '../model/router-menu-types'
-import { RouterMenuGroupProvider } from '../model/router-menu-group-provider'
-import { groupClassName, groupContentClassName, groupTriggerClassName, iconClassName, listClassName, navigationLabelClassName } from './router-menu-styles'
+import { RouterMenuGroupContext } from '../model/router-menu-group-context'
+import type { RouterMenuGroupProps } from '../model/router-menu-types'
+import {
+  groupClassName,
+  groupContentClassName,
+  groupTriggerClassName,
+  iconClassName,
+  listClassName,
+  navigationLabelClassName,
+} from './router-menu-styles'
 
-function getEntryValue(children: RouterMenuGroupProps['children']) {
-  const firstChild = Children.toArray(children)[0]
-  if (!isValidElement<RouterMenuItemProps>(firstChild)) return undefined
-  return typeof firstChild.props.to === 'string' ? firstChild.props.to : undefined
+type RegisteredRoute = {
+  id: string
+  to: string
 }
 
-export function RouterMenuGroup({ children, icon, label }: RouterMenuGroupProps) {
+export function RouterMenuGroup({
+  children,
+  icon,
+  label,
+}: RouterMenuGroupProps) {
   const id = useId()
-  const entryValue = getEntryValue(children)
+  const [routes, setRoutes] = useState<RegisteredRoute[]>([])
+
+  const registerRoute = useCallback((routeId: string, to: string) => {
+    setRoutes((currentRoutes) => {
+      const existingRouteIndex = currentRoutes.findIndex(
+        (route) => route.id === routeId,
+      )
+
+      if (existingRouteIndex === -1) {
+        return [...currentRoutes, { id: routeId, to }]
+      }
+
+      if (currentRoutes[existingRouteIndex]?.to === to) {
+        return currentRoutes
+      }
+
+      const nextRoutes = [...currentRoutes]
+      nextRoutes[existingRouteIndex] = { id: routeId, to }
+      return nextRoutes
+    })
+  }, [])
+
+  const unregisterRoute = useCallback((routeId: string) => {
+    setRoutes((currentRoutes) =>
+      currentRoutes.filter((route) => route.id !== routeId),
+    )
+  }, [])
+
+  const updateRoute = useCallback((routeId: string, to: string) => {
+    setRoutes((currentRoutes) => {
+      const routeIndex = currentRoutes.findIndex(
+        (route) => route.id === routeId,
+      )
+
+      if (routeIndex === -1 || currentRoutes[routeIndex]?.to === to) {
+        return currentRoutes
+      }
+
+      const nextRoutes = [...currentRoutes]
+      nextRoutes[routeIndex] = { id: routeId, to }
+      return nextRoutes
+    })
+  }, [])
+
+  const groupContextValue = useMemo(
+    () => ({ registerRoute, unregisterRoute, updateRoute }),
+    [registerRoute, unregisterRoute, updateRoute],
+  )
+  const entryValue = routes[0]?.to
+
   return (
     <Sidebar.Group className={groupClassName} entryValue={entryValue} id={id}>
       <Sidebar.GroupTrigger className={groupTriggerClassName}>
@@ -37,7 +96,9 @@ export function RouterMenuGroup({ children, icon, label }: RouterMenuGroupProps)
           {label}
         </span>
         <Sidebar.List className={listClassName}>
-          <RouterMenuGroupProvider>{children}</RouterMenuGroupProvider>
+          <RouterMenuGroupContext.Provider value={groupContextValue}>
+            {children}
+          </RouterMenuGroupContext.Provider>
         </Sidebar.List>
       </Sidebar.GroupContent>
     </Sidebar.Group>
