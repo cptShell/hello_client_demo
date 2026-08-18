@@ -6,5 +6,5 @@ type DecorativeIconProps = {
 }
 
 export function DecorativeIcon({ icon }: DecorativeIconProps) {
-  return cloneElement(icon, { 'aria-hidden': true })
+  return cloneElement(icon, { 'aria-hidden': true, className: 'size-[var(--sidebar-icon-size)] shrink-0' })
 }

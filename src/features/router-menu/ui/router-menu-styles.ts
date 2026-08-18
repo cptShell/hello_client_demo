@@ -4,11 +4,11 @@ import type {
   SidebarRootState,
 } from '@/shared/ui/sidebar'
 
-export const iconClassName = 'size-[var(--sidebar-icon-size)] shrink-0'
 export const listClassName =
-  'm-0 list-none p-0 mt-3 min-h-0 flex flex-1 flex-col gap-1 overflow-y-auto overscroll-contain group-data-[variant=mobile]/sidebar:mt-0 group-data-[variant=mobile]/sidebar:flex-row group-data-[variant=mobile]/sidebar:overflow-x-auto group-data-[variant=mobile]/sidebar:overflow-y-hidden group-data-[variant=mobile]/sidebar:[&>li]:min-w-[var(--sidebar-mobile-item-width)] group-data-[variant=mobile]/sidebar:[&>li]:flex-1 group-data-[variant=mobile]/sidebar:[&>li]:shrink-0'
+  'm-0 list-none p-0 mt-1 min-h-0 flex flex-1 flex-col gap-1 overflow-y-auto overscroll-contain group-data-[variant=mobile]/sidebar:mt-0 group-data-[variant=mobile]/sidebar:flex-row group-data-[variant=mobile]/sidebar:overflow-x-auto group-data-[variant=mobile]/sidebar:overflow-y-hidden group-data-[variant=mobile]/sidebar:[&>li]:min-w-[var(--sidebar-mobile-item-width)] group-data-[variant=mobile]/sidebar:[&>li]:flex-1 group-data-[variant=mobile]/sidebar:[&>li]:shrink-0'
 const itemBase =
   'group flex min-h-[var(--sidebar-item-height)] w-full items-center gap-3 overflow-hidden rounded-item px-3 text-sm/5 font-medium no-underline outline-none transition-colors duration-[var(--sidebar-motion-fast)] ease-standard focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 focus-visible:ring-offset-surface-navigation'
+export const iconClassName = 'size-[var(--sidebar-icon-size)] shrink-0 [&>svg]:size-full'
 
 export function rootClassName(state: SidebarRootState, extra?: string) {
   const layout =
@@ -28,6 +28,18 @@ export function itemClassName({ active, variant }: SidebarItemState) {
       ? 'h-[var(--sidebar-mobile-height)] min-w-[var(--sidebar-mobile-item-width)] flex-col justify-center gap-1 px-2 py-1 text-xs/4'
       : undefined
   return [itemBase, mobile, active ? 'bg-surface-active text-text-active' : 'text-text-primary hover:bg-surface-hover'].filter(Boolean).join(' ')
+}
+
+export function submenuItemClassName({ active, variant }: SidebarItemState) {
+  return [
+    itemBase,
+    variant === 'desktop-collapsed' || variant === 'mobile'
+      ? 'px-3 font-normal'
+      : 'pl-7 font-normal',
+    active
+      ? 'bg-surface-active-strong text-text-active'
+      : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+  ].join(' ')
 }
 
 export function groupClassName({ presentation, variant }: SidebarGroupState) {
