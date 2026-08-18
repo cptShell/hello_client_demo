@@ -16,7 +16,7 @@ export function rootClassName(state: SidebarRootState, extra?: string) {
       ? 'inset-x-0 bottom-0 h-[calc(var(--sidebar-mobile-height)+var(--sidebar-safe-area-bottom))] border-t border-border-default px-2 pb-[var(--sidebar-safe-area-bottom)] pt-1 shadow-bottom-bar'
       : `inset-y-0 left-0 flex-col border-r border-border-default p-3 transition-[width] duration-[var(--sidebar-motion-normal)] ease-standard ${state.variant === 'desktop-collapsed' ? 'w-[var(--sidebar-width-collapsed)] overflow-visible' : 'w-[var(--sidebar-width-expanded)] overflow-hidden'}`
   return [
-    'group/sidebar fixed z-[var(--sidebar-z-navigation)] flex bg-surface-navigation text-text-primary',
+    'group/sidebar peer/sidebar fixed z-[var(--sidebar-z-navigation)] flex bg-surface-navigation text-text-primary',
     layout,
     extra,
   ].filter(Boolean).join(' ')

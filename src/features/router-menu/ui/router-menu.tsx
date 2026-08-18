@@ -6,7 +6,7 @@ import { RouterMenuContext } from '../model/router-menu-context'
 import type { RouterMenuRootProps } from '../model/router-menu-types'
 import { collapseTriggerClassName, listClassName, rootClassName } from './router-menu-styles'
 
-export function RouterMenuRoot({ ariaLabel = 'Primary', children, className }: RouterMenuRootProps) {
+export function RouterMenuRoot({ ariaLabel = 'Primary', children }: RouterMenuRootProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const linkNavigationRef = useRef(false)
@@ -26,7 +26,7 @@ export function RouterMenuRoot({ ariaLabel = 'Primary', children, className }: R
     <RouterMenuContext.Provider value={contextValue}>
       <Sidebar.Root
         aria-label={ariaLabel}
-        className={(state) => rootClassName(state, className)}
+        className={rootClassName}
         defaultValue="/trends"
         defaultExpanded
         onValueChange={handleValueChange}

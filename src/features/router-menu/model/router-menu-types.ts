@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 export type RouterMenuRootProps = {
   ariaLabel?: string
   children: ReactNode
-  className?: string
 }
 
 export type RouterMenuItemProps = {
