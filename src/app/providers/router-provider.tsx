@@ -1,9 +1,9 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 
+import { ROUTES, toPath } from '@/app/config/routes'
 import { ApplicationShell } from '@/app/ui/application-shell'
 import { PlaceholderPage } from '@/pages/placeholder'
 import { RouterDemoPage } from '@/pages/router-demo'
-import { ROUTES, toPath } from '@/shared/config/routes'
 
 export function AppRouterProvider() {
   return (

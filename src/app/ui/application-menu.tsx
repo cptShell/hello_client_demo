@@ -11,8 +11,8 @@ import {
   TicketCheck,
 } from 'lucide-react'
 
+import { ROUTES, toPath } from '@/app/config/routes'
 import { RouterMenu } from '@/features/router-menu'
-import { ROUTES, toPath } from '@/shared/config/routes'
 
 export function ApplicationMenu() {
   return (
